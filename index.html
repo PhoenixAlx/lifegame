@@ -389,12 +389,12 @@
 				if (e.pageX || e.pageY) { 
 				  x = e.pageX ;
 				  y = e.pageY ;
-					alert("estaaa x "+x+" y "+y)
+				alert("estaaa x "+x+" y "+y);
 				}
 				else { 
 				  x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
 				  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
-					alert("oooo   estaaa x "+x+" y "+y)
+				alert("oooo   estaaa x "+x+" y "+y);
 				}
 				/*if (e.layerX || e.layerX == 0) { // MOzilla
 					  x = e.layerX;
@@ -405,7 +405,7 @@
 					}*/
 				  xClick = x - this.offsetLeft;
 				  yClick = y - this.offsetTop;
-				alert("y final estaaa x "+xClick+" y "+xClick)
+				alert("y final estaaa x "+xClick+" y "+yClick);
 				  botonRaton=e.which;
 
 				  click();
