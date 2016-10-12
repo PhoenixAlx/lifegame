@@ -389,13 +389,15 @@
 				if (e.pageX || e.pageY) { 
 				  x = e.pageX ;
 				  y = e.pageY ;
-				alert("estaaa x "+x+" y "+y);
+				
 				}
 				else { 
 				  x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
 				  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
-				alert("oooo   estaaa x "+x+" y "+y);
+				
 				}
+				x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
+				  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
 				/*if (e.layerX || e.layerX == 0) { // MOzilla
 					  x = e.layerX;
 					  y = e.layerY;
