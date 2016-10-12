@@ -386,31 +386,13 @@
 			function obtenerCoordenadas(e) {
 				var x=0;
 				var y =0;
-				if (e.pageX || e.pageY) { 
-				  x = e.pageX ;
-				  y = e.pageY ;
-				
-				}
-				else { 
-				  x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
-				  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
-				
-				}
 				var rect = graficos.getBoundingClientRect();
 				x= e.clientX - rect.left,
       				y= e.clientY - rect.top
-				alert("y final estaaa x "+x+" y "+y);
-				/*if (e.layerX || e.layerX == 0) { // MOzilla
-					  x = e.layerX;
-					  y = e.layerY;
-					} else if (e.offsetX || e.offsetX == 0) { // Opera
-					  x = e.offsetX;
-					  y = e.offsetY;
-					}*/
-				  xClick = x - this.offsetLeft;
+				xClick = x - this.offsetLeft;
 				 // yClick = y - this.offsetTop;
 				yClick = y ;
-				alert("y final estaaa x "+xClick+" y "+yClick);
+				
 				  botonRaton=e.which;
 
 				  click();
