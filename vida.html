@@ -1,0 +1,716 @@
+<!--- 
+    Herramienta creada por ( @Phoenix_alx )
+    Copyright (C) <2013>  Alex Bueno
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+---->
+<html>
+  <head>
+	  
+  </head>
+   <body>
+	  <div id="principal"  >
+
+		<div id="controlTamZonaDibujo">
+			<label for="tamDibujo">Tamaño zona dibujo</label>
+			<button id="bMenosTam" onmousedown="bajaTam()" onmouseup="parat1()" onkeydown="bajaTam()" onkeyup="parat1()">-</button>
+			<input type="tel" id="tamDibujo" name="tamDibujo" min="10" value="300" size="10">
+			</input>
+			<button id="bMasTam" onmousedown="subeTam()" onmouseup="parat1()" onkeydown="subeTam()" onkeyup="parat1()">+</button>
+		</div>
+		<div id="controlTamCelda">
+			<label for="tamCelda">Tamaño celda</label>
+			<button id="bMenosTamCelda" onmousedown="bajaTamCelda()" onmouseup="parat1()" onkeydown="bajaTamCelda()" onkeyup="parat1()">-</button>
+			<input type="tel" id="tamCelda" name="tamCelda" min="10" value="10" size="10">
+			</input>
+			<button id="bMasTamCelda" onmousedown="subeTamCelda()" onmouseup="parat1()" onkeydown="subeTamCelda()" onkeyup="parat1()">+</button>
+		</div>
+		<div id="controlTiempoAni">
+			<label for="tiempoAni">Velocidad de la animación</label>
+			<button id="bMenosTiempoAni" onmousedown="bajaTiempoAni()" onmouseup="parat1()" onkeydown="bajaTiempoAni()" onkeyup="parat1()">-</button>
+			<input type="tel" id="tiempoAni" name="tiempoAni" min="1" value="100" size="10">
+			</input>
+			<button id="bMasTiempoAni" onmousedown="subeTiempoAni()" onmouseup="parat1()" onkeydown="subeTiempoAni()" onkeyup="parat1()">+</button>
+		</div>
+		<div id="controlNumRep">
+			<label for="numRep">Número de vecinos para reproducirse</label>
+			<button id="bMenosNumRep" onmousedown="bajaNumRep()" onmouseup="parat1()" onkeydown="bajaNumRep()" onkeyup="parat1()">-</button>
+			<input type="tel" id="numRep" name="numRep" min="1" value="3" size="10">
+			</input>
+			<button id="bMasNumRep" onmousedown="subeNumRep()" onmouseup="parat1()" onkeydown="subeNumRep()" onkeyup="parat1()">+</button>
+		</div>
+		<div id="controlNumMinVec">
+			<label for="numMinVec">Mínimo número de vecinos para sobrevivir</label>
+			<button id="bMenosNumMinVec" onmousedown="bajaNumMinVec()" onmouseup="parat1()" onkeydown="bajaNumMinVec()" onkeyup="parat1()">-</button>
+			<input type="tel" id="numMinVec" name="numMinVec" min="1" value="2" size="10">
+			</input>
+			<button id="bMasNumMinVec" onmousedown="subeNumMinVec()" onmouseup="parat1()" onkeydown="subeNumMinVec()" onkeyup="parat1()">+</button>
+		</div>
+		<div id="controlNumMaxVec">
+			<label for="numMaxVec">Máximo número de vecinos para sobrevivir</label>
+			<button id="bMenosNumMaxVec" onmousedown="bajaNumMaxVec()" onmouseup="parat1()" onkeydown="bajaNumMaxVec()" onkeyup="parat1()">-</button>
+			<input type="tel" id="numMaxVec" name="numMaxVec" min="1" value="3" size="10">
+			</input>
+			<button id="bMasNumMaxVec" onmousedown="subeNumMaxVec()" onmouseup="parat1()" onkeydown="subeNumMaxVec()" onkeyup="parat1()">+</button>
+		</div>
+		<div id="botones">
+			<button id="go" onclick="animar()">Evolucionar</button>
+			<button id="stop" onclick="pararAnimacion()">Stop</button>
+			<button id="limpiar" onclick="limpiar()">Limpiar</button>
+			<button id="png" onclick="capturar()">Capturar</button> 
+
+		</div>
+		<div id="zonaDibujo">
+			<canvas id="graficos" width="300" height="300" style="top:50px;border:1px solid #000000;"></canvas>
+		</div>
+		<div id="zonaCaptura" style="margin:50px;" >
+			<img src="" alt="Captura realizada" id="laimagen"/>
+		</div>
+      </div>
+      <script type="text/javascript">
+			var x1=null;
+			var t1=null;
+			var rojo="red";
+			var blanco="white";
+			var negro="black";
+			var principal=document.getElementById("principal");
+			var tamDibujo=document.getElementById("tamDibujo");
+			var tamCelda=document.getElementById("tamCelda");
+			var numRep=document.getElementById("numRep");
+			var numMinVec=document.getElementById("numMinVec");
+			var numMaxVec=document.getElementById("numMaxVec");
+			var tiempoAni=document.getElementById("tiempoAni");
+			var graficos=document.getElementById("graficos");
+			var cxtGraf=graficos.getContext("2d");
+			//coordenadas del click
+			var xClick=0;
+			var yClick=0;
+			var botonRaton=0;//boton izquierdo
+			graficos.addEventListener('click', obtenerCoordenadas, false);
+			graficos.addEventListener('mousedown', obtenerCoordenadas, false);
+			graficos.addEventListener('key', obtenerCoordenadas, false);
+			graficos.oncontextmenu = function() {return false;} ;
+			//tamDibujo.onkeypress=obtenerCoordenadas(event);
+			//graficos.addEventListener('onmousedown', obtenerCoordenadas, false);
+			//var xLimG=graficos.scrollWidth;
+			//var yLimG=graficos.scrollHeight;
+			var xLimG=graficos.width;
+			var yLimG=graficos.height;
+			
+			//definicion de la celda
+			var xTamCelda=parseInt(tamCelda.value);
+			var yTamCelda=parseInt(tamCelda.value);
+			var numX=(xLimG)/xTamCelda;
+			var numY=(yLimG)/yTamCelda;
+			var colorEstado=[blanco,rojo];
+			//variables algoritmo Juego
+			var numVecinosRep=parseInt(numRep.value);
+			var numMinVec=parseInt(numMinVec.value);
+			var numMaxVec=parseInt(numMaxVec.value);
+			//variables del motor de evolucion
+			var estadoCelda=null;
+			var celdasActivas=new Array();
+			var celdasEvolucionan=new Array();
+			var vecinosCeldasEvolucionan=new Array();
+			//variables de control animacion
+			var tiempoAnimacion=parseInt(tiempoAni.value);
+			var timeChungo=new Array();
+			var numTimechungo=0;
+			limpiarEstados();
+			dibujarGrid();
+			
+			function crearMatrizEstado(){
+				 estadoCelda=new Array(numX);
+				 for (var fila=0;fila<numX;fila++){
+				   estadoCelda[fila]=new Array(numY);
+				  }
+
+				return;
+			}
+			function capturar(){
+				var dato = graficos.toDataURL("image/png");
+				dato = dato.replace("image/png", "image/octet-stream");
+				var img = document.getElementById("laimagen");
+				img.src=dato;
+				//document.location.href = dato;          
+				return;
+			}
+			function animar(){
+				
+				timeChungo[numTimechungo]=setInterval("evolucionar()",tiempoAnimacion);
+				numTimechungo++;
+				tamDibujo.disabled = true;
+				return;
+			}
+			function evolucionar(){
+				//evolucion
+				evolucion();
+				//pasar estados numericos a graficos
+				var estado=0;
+				var parar=0;
+				var x1=parseInt(xClick/xTamCelda)*xTamCelda;
+				var y1=parseInt(yClick/yTamCelda)*yTamCelda;
+				var x2=xTamCelda;
+				var y2=yTamCelda;
+				
+				for (var i=0;i<numX;i++){
+					for (var j=0;j<numY;j++){
+						estado=estadoCelda[i][j];
+						x1=i*xTamCelda;
+						y1=j*yTamCelda;
+						dibujar_cuadro(cxtGraf,x1,y1,x2,y2,colorEstado[estado]);
+						if (estado>0){
+							parar=1;
+						}
+					}
+				}
+				if (parar==0){
+					pararAnimacion();
+				}
+				
+				//pintar
+				return;
+			}
+			function pararAnimacion(){
+				for (var i=0;i<timeChungo.length;i++){
+					clearInterval(timeChungo[i]);
+					numTimechungo=0;
+				}
+				tamDibujo.disabled = false;
+				return;
+			}
+			function evolucion(){
+				//mirar celdas activas
+				obtenerCeldasActivas();
+				//mirar celdas evolucionan
+				obtenerCeldasEvolucionan();
+				//aplicar reglas evolucion
+				reglasEvolucion();
+				return;
+			}
+			function reglasEvolucion(){
+				var i=0;
+				var j=0;
+				var vecinos=0;
+				var estado=0;
+				var valorCelda=new Array(3);
+				var celdas = "";
+				for (var t=0;t<celdasEvolucionan.length;t++){
+					celda=celdasEvolucionan[t];
+					
+					valorCelda=celda.split(';');
+					i=parseInt(valorCelda[0]);
+					j=parseInt(valorCelda[1]);
+					vecinos=vecinosCeldasEvolucionan[t];
+					estado=estadoCelda[i][j];
+					if (estado>0 && (vecinos<numMinVec || vecinos >numMaxVec)){
+						estado=0;//muere
+					}
+					if (estado<1 && vecinos==numVecinosRep){
+						estado=1;//nace
+					}
+
+					estadoCelda[i][j]=estado;
+				}
+				return;
+			}
+			function obtenerVecinos(valor,numCeldasEvolucionan,otros){
+				pos=celdasEvolucionan.indexOf(valor);
+				if (pos<0){
+					celdasEvolucionan[numCeldasEvolucionan]=valor;
+					vecinosCeldasEvolucionan[numCeldasEvolucionan]=otros;
+					numCeldasEvolucionan++;
+				}else if (otros>0){
+					vecinosCeldasEvolucionan[pos]++;
+
+					
+				}
+				
+				return numCeldasEvolucionan;
+			}
+			function obtenerCeldasEvolucionan(){
+				var i=0;
+				var iaux=0;
+				var jaux=0;
+				var valorCelda=new Array(2);
+				var j=0;
+				var valor="";
+				var valorAux=""
+				var vecinos=0;
+				var pos =0;
+				var celda="";
+				celdasEvolucionan=new Array();
+				vecinosCeldasEvolucionan=new Array();
+				var numCeldasEvolucionan=0;
+				for (t=0;t<celdasActivas.length;t++){
+					celda=celdasActivas[t];
+					valorCelda=celda.split(';');
+					i=parseInt(valorCelda[0]);
+					j=parseInt(valorCelda[1]);
+					//vecino arriba izquierda
+					vecino=1;
+					iaux=(i-1).mod(numX);
+					jaux=(j-1).mod(numY);
+					valor=iaux+";"+jaux;
+					numCeldasEvolucionan=obtenerVecinos(valor,numCeldasEvolucionan,1);
+
+					//vecino arriba centro
+					vecino=1;
+					iaux=i.mod(numX);
+					jaux=(j-1).mod(numY);
+					valor=iaux+";"+jaux;
+					numCeldasEvolucionan=obtenerVecinos(valor,numCeldasEvolucionan,1);
+
+					//vecino arriba derecha
+					vecino=1;
+					iaux=(i+1).mod(numX);
+					jaux=(j-1).mod(numY);
+					valor=iaux+";"+jaux;
+					numCeldasEvolucionan=obtenerVecinos(valor,numCeldasEvolucionan,1);
+
+					//vecino derecha
+					vecino=1;
+					iaux=(i+1).mod(numX);
+					jaux=j.mod(numY);
+					valor=iaux+";"+jaux;
+					numCeldasEvolucionan=obtenerVecinos(valor,numCeldasEvolucionan,1);
+
+					//vecino izquierda
+					vecino=1;
+					iaux=(i-1).mod(numX);
+					jaux=j.mod(numY);
+					valor=iaux+";"+jaux;
+					numCeldasEvolucionan=obtenerVecinos(valor,numCeldasEvolucionan,1);
+
+					//el mismo
+					vecino=0;
+					iaux=i;
+					jaux=j;
+					valor=iaux+";"+jaux;
+					numCeldasEvolucionan=obtenerVecinos(valor,numCeldasEvolucionan,0);
+					//vecino abajo derecha
+					vecino=1;
+					iaux=(i+1).mod(numX);
+					jaux=(j+1).mod(numY);
+					valor=iaux+";"+jaux;
+					numCeldasEvolucionan=obtenerVecinos(valor,numCeldasEvolucionan,1);
+
+					//vecino abajo centro
+					vecino=1;
+					iaux=i.mod(numX);
+					jaux=(j+1).mod(numY);
+					valor=iaux+";"+jaux;
+					numCeldasEvolucionan=obtenerVecinos(valor,numCeldasEvolucionan,1);
+
+					//vecino abajo izquierda
+					vecino=1;
+					iaux=(i-1).mod(numX);
+					jaux=(j+1).mod(numY);
+					valor=iaux+";"+jaux;
+					numCeldasEvolucionan=obtenerVecinos(valor,numCeldasEvolucionan,1);
+
+				}
+				return;
+			}
+			function obtenerCeldasActivas(){
+				celdasActivas=new Array();
+				var indice=0;
+				for (var i=0;i<numX;i++){
+					for (var j=0;j<numY;j++){
+						if (estadoCelda[i][j]>0){
+							valor=i+";"+j;
+							celdasActivas[indice]=valor;
+							indice++;
+						};
+					}
+				}
+
+				return;
+			}
+			
+			function limpiarEstados(){
+				crearMatrizEstado();
+				for (var i=0;i<numX;i++){
+					for (var j=0;j<numY;j++){
+						estadoCelda[i][j]=0;
+					}
+				}
+				celdasActivas=new Array();
+				celdasEvolucionan=new Array();
+				return;
+			}
+			function dibujar_cuadro(contexto,x1,y1,x2,y2,color){
+				contexto.fillStyle = color;
+				contexto.fillRect(x1, y1, x2,y2);
+				contexto.lineWidth = 1;
+				contexto.strokeStyle = negro;
+				contexto.strokeRect(x1, y1, x2, y2);
+				return;
+			} 
+			function obtenerCoordenadas(e) {
+				var x=0;
+				var y =0;
+				if (e.pageX || e.pageY) { 
+				  x = e.pageX;
+				  y = e.pageY;
+				}
+				else { 
+				  x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
+				  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
+				}
+				/*if (e.layerX || e.layerX == 0) { // MOzilla
+					  x = e.layerX;
+					  y = e.layerY;
+					} else if (e.offsetX || e.offsetX == 0) { // Opera
+					  x = e.offsetX;
+					  y = e.offsetY;
+					}*/
+				  xClick = x - this.offsetLeft;
+				  yClick = y - this.offsetTop;
+				  botonRaton=e.which;
+
+				  click();
+				  return;
+			};
+			function click(){
+				//localizar la celda
+				var x1=parseInt(xClick/xTamCelda);
+				var y1=parseInt(yClick/yTamCelda);
+				var estado=0;
+				var color=blanco;
+				if (botonRaton<2){
+					estado=1;
+					color=rojo;
+				}
+				
+    estadoCelda[x1][y1]=estado;
+
+				x1=parseInt(xClick/xTamCelda)*xTamCelda;
+				y1=parseInt(yClick/yTamCelda)*yTamCelda;
+				var x2=xTamCelda;
+				var y2=yTamCelda;
+				dibujar_cuadro(cxtGraf,x1,y1,x2,y2,color);
+				return;
+			}
+			function dibujarGrid(){
+				var x2=xTamCelda;
+				var y2=yTamCelda;
+				
+				for (var i=0;i<numX;i++){
+					for (var j=0;j<numY;j++){
+						x1=i*xTamCelda;
+						y1=j*yTamCelda;
+						dibujar_cuadro(cxtGraf,x1,y1,x2,y2,blanco);
+					}
+				}
+			}
+			function limpiar(){
+				cxtGraf.clearRect(0, 0, xLimG,yLimG);
+				numX=parseInt(xLimG/xTamCelda);
+				numY=parseInt(yLimG/yTamCelda);
+				pararAnimacion();
+				limpiarEstados();
+				dibujarGrid();
+			}
+			function disminuirTam(){
+				var campo=document.getElementById("tamDibujo");
+				var valor=parseInt(campo.value);
+				var campo2=document.getElementById("tamCelda");
+				var valor2=parseInt(campo2.value);
+				valor=valor-1;
+				if (valor<=10){
+				 valor=10;
+				}
+				if (valor<valor2){
+					campo2.value=valor;
+				}
+				campo.value=valor;
+				xLimG=valor;
+				graficos.width=xLimG;
+				yLimG=valor;
+				graficos.height=yLimG;
+
+				return;
+			}
+			function aumentarTam(){
+				var campo=document.getElementById("tamDibujo");
+				var valor=parseInt(campo.value);
+				valor=valor+1;
+				campo.value=valor;
+				xLimG=valor;
+				graficos.width=xLimG;
+				yLimG=valor;
+				graficos.height=yLimG;
+
+				return;
+			}
+			function bajaTam(){ 
+				var campo=document.getElementById("tamDibujo");
+				var regExp=comprobarNumero(campo.value); 
+				if (regExp){
+					t1=setInterval("disminuirTam()",40);
+					
+				}else{
+					alert('mete un número entero so burro');
+				}
+			}
+			function subeTam(){ 
+				var campo=document.getElementById("tamDibujo");
+				var regExp=comprobarNumero(campo.value); 
+				if (regExp){
+					t1=setInterval("aumentarTam()",40);
+					
+				}else{
+					alert('mete un número entero so burro');
+				}
+			}
+			function disminuirTamCelda(){
+				var campo=document.getElementById("tamCelda");
+				var valor=parseInt(campo.value);
+				valor=valor-1;
+				if (valor<=10){
+				 valor=10;
+				}
+				campo.value=valor;
+				
+				xTamCelda=valor;
+				yTamCelda=valor;
+				
+				
+				return;
+			}
+			function aumentarTamCelda(){
+				var campo=document.getElementById("tamCelda");
+				var valor=parseInt(campo.value);
+				valor=valor+1;
+				if (valor>xLimG){
+					valor=xLimG;
+				}
+				campo.value=valor;
+				
+				xTamCelda=valor;
+				yTamCelda=valor;
+				return;
+			}
+			function bajaTamCelda(){ 
+				var campo=document.getElementById("tamCelda");
+				var regExp=comprobarNumero(campo.value); 
+				if (regExp){
+					t1=setInterval("disminuirTamCelda()",40);
+					
+				}else{
+					alert('mete un número entero so burro');
+				}
+			}
+			function subeTamCelda(){ 
+				var campo=document.getElementById("tamCelda");
+				var regExp=comprobarNumero(campo.value); 
+				if (regExp){
+					t1=setInterval("aumentarTamCelda()",40);
+					
+				}else{
+					alert('mete un número entero so burro');
+				}
+			}
+			
+			function disminuirNumRep(){
+				var campo=document.getElementById("numRep");
+				var valor=parseInt(campo.value);
+				valor=valor-1;
+				if (valor<1){
+				 valor=1;
+				}
+				numVecinosRep=valor;
+				campo.value=valor;
+				return;
+			}
+			function aumentarNumRep(){
+				var campo=document.getElementById("numRep");
+				var valor=parseInt(campo.value);
+				valor=valor+1;
+				campo.value=valor;
+				numVecinosRep=valor;
+				return;
+			}
+			function bajaNumRep(){ 
+				var campo=document.getElementById("numRep");
+				var regExp=comprobarNumero(campo.value); 
+				if (regExp){
+					t1=setInterval("disminuirNumRep()",40);
+					
+				}else{
+					alert('mete un número entero so burro');
+				}
+			}
+			function subeNumRep(){ 
+				var campo=document.getElementById("numRep");
+				var regExp=comprobarNumero(campo.value); 
+				if (regExp){
+					t1=setInterval("aumentarNumRep()",40);
+					
+				}else{
+					alert('mete un número entero so burro');
+				}
+			}
+			
+			function disminuirNumMinVec(){
+				var campo=document.getElementById("numMinVec");
+				var valor=parseInt(campo.value);
+				valor=valor-1;
+				if (valor<1){
+				 valor=1;
+				}
+				numMinVec=valor;
+				campo.value=valor;
+				return;
+			}
+			function aumentarNumMinVec(){
+				var campo=document.getElementById("numMinVec");
+				var campo2=document.getElementById("numMaxVec");
+				var valor=parseInt(campo.value);
+				var valor2=parseInt(campo2.value);
+				valor=valor+1;
+				if (valor>valor2){
+					valor=valor2;
+				}	
+				campo.value=valor;
+				numMinVec=valor;
+				return;
+			}
+			function bajaNumMinVec(){ 
+				var campo=document.getElementById("numMinVec");
+				var regExp=comprobarNumero(campo.value); 
+				if (regExp){
+					t1=setInterval("disminuirNumMinVec()",40);
+					
+				}else{
+					alert('mete un número entero so burro');
+				}
+			}
+			function subeNumMinVec(){ 
+				var campo=document.getElementById("numMinVec");
+				var regExp=comprobarNumero(campo.value); 
+				if (regExp){
+					t1=setInterval("aumentarNumMinVec()",40);
+					
+				}else{
+					alert('mete un número entero so burro');
+				}
+			}
+			
+			function disminuirNumMaxVec(){
+				var campo=document.getElementById("numMaxVec");
+				var campo2=document.getElementById("numMinVec");
+				var valor=parseInt(campo.value);
+				var valor2=parseInt(campo2.value);
+				valor=valor-1;
+				if (valor<1){
+				 valor=1;
+				}
+				if (valor<valor2){
+					valor=valor2;
+				}
+				numMaxVec=valor;
+				campo.value=valor;
+				return;
+			}
+			function aumentarNumMaxVec(){
+				var campo=document.getElementById("numMaxVec");
+				var valor=parseInt(campo.value);
+				valor=valor+1;
+				campo.value=valor;
+				numMaxVec=valor;
+				return;
+			}
+			function bajaNumMaxVec(){ 
+				var campo=document.getElementById("numMaxVec");
+				var regExp=comprobarNumero(campo.value); 
+				if (regExp){
+					t1=setInterval("disminuirNumMaxVec()",40);
+					
+				}else{
+					alert('mete un número entero so burro');
+				}
+			}
+			function subeNumMaxVec(){ 
+				var campo=document.getElementById("numMaxVec");
+				var regExp=comprobarNumero(campo.value); 
+				if (regExp){
+					t1=setInterval("aumentarNumMaxVec()",40);
+					
+				}else{
+					alert('mete un número entero so burro');
+				}
+			}
+			
+			function disminuirTiempoAni(){
+				var campo=document.getElementById("tiempoAni");
+				var valor=parseInt(campo.value);
+				valor=valor-1;
+				if (valor<1){
+				 valor=1;
+				}
+				tiempoAnimacion=valor;
+				campo.value=valor;
+				return;
+			}
+			function aumentarTiempoAni(){
+				var campo=document.getElementById("tiempoAni");
+				var valor=parseInt(campo.value);
+				valor=valor+1;
+				campo.value=valor;
+				tiempoAnimacion=valor;
+				return;
+			}
+			function bajaTiempoAni(){ 
+				var campo=document.getElementById("tiempoAni");
+				var regExp=comprobarNumero(campo.value); 
+				if (regExp){
+					t1=setInterval("disminuirTiempoAni()",40);
+					
+				}else{
+					alert('mete un número entero so burro');
+				}
+			}
+			function subeTiempoAni(){ 
+				var campo=document.getElementById("tiempoAni");
+				var regExp=comprobarNumero(campo.value); 
+				if (regExp){
+					t1=setInterval("aumentarTiempoAni()",40);
+					
+				}else{
+					alert('mete un número entero so burro');
+				}
+			}
+			
+			function parat1() {	 
+				//al soltar el ratón:
+				clearInterval(t1);//parar el temporizador.
+				limpiar();
+			}
+			function comprobarNumero(valor){
+				var regExp=/[0-9]{1,10}$/.test(valor);
+				return regExp;
+			}
+			Number.prototype.mod = function(n) {
+				return ((this%n)+n)%n;
+			}
+			String.prototype.regexIndexOf = function(regex, startpos) {
+				var indexOf = this.substring(startpos || 0).search(regex);
+				return (indexOf >= 0) ? (indexOf + (startpos || 0)) : indexOf;
+			}
+       </script>
+  </body>
+  
+</html>
