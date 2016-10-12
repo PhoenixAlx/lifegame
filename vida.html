@@ -23,42 +23,42 @@
 	  <div id="principal"  >
 
 		<div id="controlTamZonaDibujo">
-			<label for="tamDibujo">Tamaño zona dibujo</label>
+			<label for="tamDibujo">TamaÃ±o zona dibujo</label>
 			<button id="bMenosTam" onmousedown="bajaTam()" onmouseup="parat1()" onkeydown="bajaTam()" onkeyup="parat1()">-</button>
 			<input type="tel" id="tamDibujo" name="tamDibujo" min="10" value="300" size="10">
 			</input>
 			<button id="bMasTam" onmousedown="subeTam()" onmouseup="parat1()" onkeydown="subeTam()" onkeyup="parat1()">+</button>
 		</div>
 		<div id="controlTamCelda">
-			<label for="tamCelda">Tamaño celda</label>
+			<label for="tamCelda">TamaÃ±o celda</label>
 			<button id="bMenosTamCelda" onmousedown="bajaTamCelda()" onmouseup="parat1()" onkeydown="bajaTamCelda()" onkeyup="parat1()">-</button>
 			<input type="tel" id="tamCelda" name="tamCelda" min="10" value="10" size="10">
 			</input>
 			<button id="bMasTamCelda" onmousedown="subeTamCelda()" onmouseup="parat1()" onkeydown="subeTamCelda()" onkeyup="parat1()">+</button>
 		</div>
 		<div id="controlTiempoAni">
-			<label for="tiempoAni">Velocidad de la animación</label>
+			<label for="tiempoAni">Velocidad de la animaciÃ³n</label>
 			<button id="bMenosTiempoAni" onmousedown="bajaTiempoAni()" onmouseup="parat1()" onkeydown="bajaTiempoAni()" onkeyup="parat1()">-</button>
 			<input type="tel" id="tiempoAni" name="tiempoAni" min="1" value="100" size="10">
 			</input>
 			<button id="bMasTiempoAni" onmousedown="subeTiempoAni()" onmouseup="parat1()" onkeydown="subeTiempoAni()" onkeyup="parat1()">+</button>
 		</div>
 		<div id="controlNumRep">
-			<label for="numRep">Número de vecinos para reproducirse</label>
+			<label for="numRep">NÃºmero de vecinos para reproducirse</label>
 			<button id="bMenosNumRep" onmousedown="bajaNumRep()" onmouseup="parat1()" onkeydown="bajaNumRep()" onkeyup="parat1()">-</button>
 			<input type="tel" id="numRep" name="numRep" min="1" value="3" size="10">
 			</input>
 			<button id="bMasNumRep" onmousedown="subeNumRep()" onmouseup="parat1()" onkeydown="subeNumRep()" onkeyup="parat1()">+</button>
 		</div>
 		<div id="controlNumMinVec">
-			<label for="numMinVec">Mínimo número de vecinos para sobrevivir</label>
+			<label for="numMinVec">MÃ­nimo nÃºmero de vecinos para sobrevivir</label>
 			<button id="bMenosNumMinVec" onmousedown="bajaNumMinVec()" onmouseup="parat1()" onkeydown="bajaNumMinVec()" onkeyup="parat1()">-</button>
 			<input type="tel" id="numMinVec" name="numMinVec" min="1" value="2" size="10">
 			</input>
 			<button id="bMasNumMinVec" onmousedown="subeNumMinVec()" onmouseup="parat1()" onkeydown="subeNumMinVec()" onkeyup="parat1()">+</button>
 		</div>
 		<div id="controlNumMaxVec">
-			<label for="numMaxVec">Máximo número de vecinos para sobrevivir</label>
+			<label for="numMaxVec">MÃ¡ximo nÃºmero de vecinos para sobrevivir</label>
 			<button id="bMenosNumMaxVec" onmousedown="bajaNumMaxVec()" onmouseup="parat1()" onkeydown="bajaNumMaxVec()" onkeyup="parat1()">-</button>
 			<input type="tel" id="numMaxVec" name="numMaxVec" min="1" value="3" size="10">
 			</input>
@@ -361,23 +361,12 @@
 			function obtenerCoordenadas(e) {
 				var x=0;
 				var y =0;
-				if (e.pageX || e.pageY) { 
-				  x = e.pageX;
-				  y = e.pageY;
-				}
-				else { 
-				  x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
-				  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
-				}
-				/*if (e.layerX || e.layerX == 0) { // MOzilla
-					  x = e.layerX;
-					  y = e.layerY;
-					} else if (e.offsetX || e.offsetX == 0) { // Opera
-					  x = e.offsetX;
-					  y = e.offsetY;
-					}*/
-				  xClick = x - this.offsetLeft;
-				  yClick = y - this.offsetTop;
+				var rect = graficos.getBoundingClientRect();
+				x= e.clientX - rect.left,
+      				y= e.clientY - rect.top
+				xClick = x - this.offsetLeft;
+				 // yClick = y - this.offsetTop;
+				yClick = y ;
 				  botonRaton=e.which;
 
 				  click();
@@ -462,7 +451,7 @@
 					t1=setInterval("disminuirTam()",40);
 					
 				}else{
-					alert('mete un número entero so burro');
+					alert('mete un nÃºmero entero so burro');
 				}
 			}
 			function subeTam(){ 
@@ -472,7 +461,7 @@
 					t1=setInterval("aumentarTam()",40);
 					
 				}else{
-					alert('mete un número entero so burro');
+					alert('mete un nÃºmero entero so burro');
 				}
 			}
 			function disminuirTamCelda(){
@@ -510,7 +499,7 @@
 					t1=setInterval("disminuirTamCelda()",40);
 					
 				}else{
-					alert('mete un número entero so burro');
+					alert('mete un nÃºmero entero so burro');
 				}
 			}
 			function subeTamCelda(){ 
@@ -520,7 +509,7 @@
 					t1=setInterval("aumentarTamCelda()",40);
 					
 				}else{
-					alert('mete un número entero so burro');
+					alert('mete un nÃºmero entero so burro');
 				}
 			}
 			
@@ -550,7 +539,7 @@
 					t1=setInterval("disminuirNumRep()",40);
 					
 				}else{
-					alert('mete un número entero so burro');
+					alert('mete un nÃºmero entero so burro');
 				}
 			}
 			function subeNumRep(){ 
@@ -560,7 +549,7 @@
 					t1=setInterval("aumentarNumRep()",40);
 					
 				}else{
-					alert('mete un número entero so burro');
+					alert('mete un nÃºmero entero so burro');
 				}
 			}
 			
@@ -595,7 +584,7 @@
 					t1=setInterval("disminuirNumMinVec()",40);
 					
 				}else{
-					alert('mete un número entero so burro');
+					alert('mete un nÃºmero entero so burro');
 				}
 			}
 			function subeNumMinVec(){ 
@@ -605,7 +594,7 @@
 					t1=setInterval("aumentarNumMinVec()",40);
 					
 				}else{
-					alert('mete un número entero so burro');
+					alert('mete un nÃºmero entero so burro');
 				}
 			}
 			
@@ -640,7 +629,7 @@
 					t1=setInterval("disminuirNumMaxVec()",40);
 					
 				}else{
-					alert('mete un número entero so burro');
+					alert('mete un nÃºmero entero so burro');
 				}
 			}
 			function subeNumMaxVec(){ 
@@ -650,7 +639,7 @@
 					t1=setInterval("aumentarNumMaxVec()",40);
 					
 				}else{
-					alert('mete un número entero so burro');
+					alert('mete un nÃºmero entero so burro');
 				}
 			}
 			
@@ -680,7 +669,7 @@
 					t1=setInterval("disminuirTiempoAni()",40);
 					
 				}else{
-					alert('mete un número entero so burro');
+					alert('mete un nÃºmero entero so burro');
 				}
 			}
 			function subeTiempoAni(){ 
@@ -690,12 +679,12 @@
 					t1=setInterval("aumentarTiempoAni()",40);
 					
 				}else{
-					alert('mete un número entero so burro');
+					alert('mete un nÃºmero entero so burro');
 				}
 			}
 			
 			function parat1() {	 
-				//al soltar el ratón:
+				//al soltar el ratÃ³n:
 				clearInterval(t1);//parar el temporizador.
 				limpiar();
 			}
