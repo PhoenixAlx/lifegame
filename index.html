@@ -396,8 +396,9 @@
 				  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
 				
 				}
-				x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
-				  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
+				var rect = canvas.getBoundingClientRect();
+				x= e.clientX - rect.left,
+      				y= e.clientY - rect.top
 				alert("y final estaaa x "+x+" y "+y);
 				/*if (e.layerX || e.layerX == 0) { // MOzilla
 					  x = e.layerX;
