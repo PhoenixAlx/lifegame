@@ -387,14 +387,12 @@
 				var x=0;
 				var y =0;
 				if (e.pageX || e.pageY) { 
-				  x = e.pageX;
-				  y = e.pageY;
+				  x = e.pageX + document.body.scrollLeft + document.documentElement.scrollLeft;
+				  y = e.pageY + document.body.scrollTop + document.documentElement.scrollTop;
 				}
 				else { 
-				  /*x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
-				  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; */
-				  x = e.clientX ; 
-				  y = e.clientY ;
+				  x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
+				  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
 				}
 				/*if (e.layerX || e.layerX == 0) { // MOzilla
 					  x = e.layerX;
