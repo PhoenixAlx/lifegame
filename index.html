@@ -391,16 +391,18 @@
 				  y = e.pageY;
 				}
 				else { 
-				  x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
-				  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
+				  /*x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
+				  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; */
+				  x = e.clientX ; 
+				  y = e.clientY ;
 				}
-				if (e.layerX || e.layerX == 0) { // MOzilla
+				/*if (e.layerX || e.layerX == 0) { // MOzilla
 					  x = e.layerX;
 					  y = e.layerY;
 					} else if (e.offsetX || e.offsetX == 0) { // Opera
 					  x = e.offsetX;
 					  y = e.offsetY;
-					}
+					}*/
 				  xClick = x - this.offsetLeft;
 				  yClick = y - this.offsetTop;
 				  botonRaton=e.which;
